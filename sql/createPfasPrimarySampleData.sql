@@ -88,3 +88,5 @@ INNER JOIN podm_medium m ON m.medium_id=sa.medium_id
 INNER JOIN podm_location l ON l.location_id=sa.location_id
 INNER JOIN podm_sample_groups sg ON sg.group_id=sa.group_id
 INNER JOIN podm_pfas_data d ON d.sample_id=sa.sample_id;
+
+CREATE INDEX IF NOT EXISTS podm_pfas_sample_data_index ON podm_pfas_sample_data (id, sample_id, group_id);

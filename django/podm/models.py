@@ -251,3 +251,45 @@ class pfas_sites_distance_from_npl(models.Model):
     class Meta: 
         managed = False
         db_table = "pfas_sites_distance_from_npl"
+
+class superfund_national_priorities_list(models.Model):
+    ogc_fid = models.IntegerField(null=False, primary_key=True)
+    objectid = models.CharField(max_length=7,null=True)
+    site_name = models.CharField(max_length=100,null=True)
+    site_score = models.FloatField()
+    site_epa_i = models.CharField(max_length=20,null=True)
+    sems_id = models.IntegerField()
+    sits_id = models.IntegerField()
+    region_id = models.IntegerField()
+    state = models.CharField(max_length=40,null=True)
+    city = models.CharField(max_length=50,null=True)
+    county = models.CharField(max_length=60,null=True)
+    status = models.CharField(max_length=25,null=True)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
+    proposed_d = models.CharField(max_length=15,null=True)
+    listing_da = models.CharField(max_length=15,null=True)
+    constructi = models.CharField(max_length=15,null=True)
+    construc_1 = models.FloatField()
+    noid_date = models.CharField(max_length=15,null=True)
+    deletion_d = models.CharField(max_length=15,null=True)
+    site_listi = models.CharField(max_length=120,null=True)
+    site_progr = models.CharField(max_length=200,null=True)
+    notice_of = models.CharField(max_length=140,null=True)
+    proposed_f = models.CharField(max_length=120,null=True)
+    deletion_f = models.CharField(max_length=120,null=True)
+    final_fr_n = models.CharField(max_length=120,null=True)
+    noid_fr_no = models.CharField(max_length=120,null=True)
+    restoratio = models.CharField(max_length=200,null=True)
+    site_has_h = models.CharField(max_length=140,null=True)
+    creationda = models.CharField(max_length=10,null=True)
+    creator = models.CharField(max_length=10,null=True)
+    editdate = models.CharField(max_length=10,null=True)
+    editor = models.CharField(max_length=10,null=True)
+    objectid2 = models.IntegerField()
+    pfas = models.BooleanField(null=False, default=False)
+
+    class Meta: 
+        managed = False
+        db_table = "superfund_national_priorities_list"
+#"""

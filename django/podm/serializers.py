@@ -1,6 +1,6 @@
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from rest_framework.serializers import ModelSerializer
-from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl
+from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list
 from drf_queryfields import QueryFieldsMixin
 
 # Serializer, with GeoFeatureModelSerializer, for tables for the gauge_station_source_data model view.
@@ -45,4 +45,9 @@ class pfas_sites_distance_from_npl_Serializer(ModelSerializer):
         id_field = 'pfas_sample_id'
         fields = ('pfas_sample_id','study','miles','pi','units','medium','pfas_longitude','pfas_latitude','ogc_fid','npl_site_name','npl_latitude','npl_longitude')
 
+class superfund_national_priorities_list_Serializer(ModelSerializer):
+    class Meta:
+        model = superfund_national_priorities_list
+        id_field = 'ogc_fid'
+        fields = ('ogc_fid','objectid','site_name','site_score','site_epa_i','sems_id','sits_id','region_id','state','city','county','status','longitude','latitude','proposed_d','listing_da','constructi','construc_1','noid_date','deletion_d','site_listi','site_progr','notice_of','proposed_f','deletion_f','final_fr_n','noid_fr_no','restoratio','site_has_h','creationda','creator','editdate','editor','objectid2','pfas')
 

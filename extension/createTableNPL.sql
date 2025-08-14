@@ -1,0 +1,5 @@
+CREATE TABLE superfund_national_priorities_list AS TABLE superfund_albers_national_priorities_list;
+
+ALTER TABLE superfund_national_priorities_list DROP COLUMN wkb_geometry;
+
+ALTER TABLE superfund_national_priorities_list RENAME COLUMN notice_of_ TO notice_of;

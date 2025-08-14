@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW  podm_ntar_sample_data AS
+CREATE MATERIALIZED VIEW podm_ntar_sample_data AS
 SELECT sa.id AS id,
        sa.sample_id AS sample_id,
        st.study AS study,
@@ -25,3 +25,5 @@ INNER JOIN podm_technique t ON t.technique_id=sa.technique_id
 INNER JOIN podm_medium m ON m.medium_id=sa.medium_id
 INNER JOIN podm_location l ON l.location_id=sa.location_id
 INNER JOIN podm_ntar_data d ON d.sample_id=sa.sample_id;
+
+CREATE INDEX IF NOT EXISTS podm_ntar_sample_data_index ON podm_ntar_sample_data (id, sample_id);

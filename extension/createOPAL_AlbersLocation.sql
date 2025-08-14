@@ -19,3 +19,8 @@ ALTER TABLE opal_albers_location ADD COLUMN geom geometry(Point, 102008);
 UPDATE opal_albers_location 
 SET geom = ST_Transform(ST_SetSRID(ST_MakePoint(longitude::double precision, latitude::double precision) 4326), 102008);
 
+CREATE INDEX IF NOT EXISTS opal_albers_location_id_index
+ON opal_albers_location(location_id);
+
+CREATE INDEX opal_albers_location_geom_index 
+ON opal_albers_location USING GIST (geom);

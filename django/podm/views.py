@@ -12,8 +12,8 @@ from rest_framework_gis.filters import InBBoxFilter, DistanceToPointFilter, Dist
 from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
 from url_filter.integrations.drf import DjangoFilterBackend
-from .serializers import pfas_name_classification_info_Serializer, pfas_in_tapwater_usgs_Serializer, pfas_sample_data_Serializer, pfas_sample_data2_Serializer, ntar_sample_data_Serializer, pfas_sites_distance_from_npl_Serializer
-from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl
+from .serializers import pfas_name_classification_info_Serializer, pfas_in_tapwater_usgs_Serializer, pfas_sample_data_Serializer, pfas_sample_data2_Serializer, ntar_sample_data_Serializer, pfas_sites_distance_from_npl_Serializer, superfund_national_priorities_list_Serializer
+from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_gis.pagination import GeoJsonPagination
 from django.db import connection
@@ -48,6 +48,19 @@ class podm_pfas_in_tapwater_usgs_View(viewsets.ModelViewSet):
     filter_fields = ['id', 'study', 'station_na', 'site_type', 'sampleyear', 'detects', 'sum_pfas', 'pfprs', 'pfpes', 'pfpea', 'pfos',
                      'pfoa', 'pfhxs', 'pfhxa', 'pfhps', 'pfhpa', 'pfds_num', 'pfda_num', 'pfbs', 'pfba', 'pf', 'genx_num', 'fosa',
                      'f6_2fts', 'latitude', 'longitude']
+
+#"""
+class superfund_national_priorities_list_View(viewsets.ModelViewSet):
+    #authentication_classes = [JWTAuthentication]
+    #permission_classes = [IsAuthenticated]
+
+    pagination_class = CustomPageNumberPagination
+    queryset = superfund_national_priorities_list.objects.all()
+    serializer_class = superfund_national_priorities_list_Serializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filter_fields = ['ogc_fid','objectid','site_name','site_score','site_epa_i','sems_id','sits_id','region_id','state','city','county','status','longitude','latitude','proposed_d','listing_da','constructi','construc_1','noid_date','deletion_d','site_listi','site_progr','notice_of','proposed_f','deletion_f','final_fr_n','noid_fr_no','restoratio','site_has_h','creationda','creator','editdate','editor','objectid2','pfas']
+    ordering_fields = ['ogc_fid','objectid','site_name','site_score','site_epa_i','sems_id','sits_id','region_id','state','city','county','status','longitude','latitude','proposed_d','listing_da','constructi','construc_1','noid_date','deletion_d','site_listi','site_progr','notice_of','proposed_f','deletion_f','final_fr_n','noid_fr_no','restoratio','site_has_h','creationda','creator','editdate','editor','objectid2','pfas']
+#"""
 
 class podm_pfas_sample_data_View(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
@@ -97,18 +110,22 @@ class pfas_sites_distance_from_npl_View(viewsets.ModelViewSet):
 
         # Example: Accessing a path parameter (e.g., 'pk' for a detail action)
         variables = self.kwargs.get('pk').split('&')
-        if len(variables) == 3:
+        if len(variables) == 4:
             for variable in variables:
                 vparts = variable.split('=')
                 if vparts[0] == 'miles':
                     miles = int(vparts[1])
                 elif vparts[0] == 'pi':
                     pi = vparts[1]
+                elif vparts[0] == 'analytes':
+                    pfas1, pfas2 = vparts[1].split('|')
+                    pfas1 = pfas1+'_concentration'
+                    pfas2 = pfas2+'_concentration'
                 elif vparts[0] == 'pfasb':
                     pfasb = vparts[1]
 
             # Custom Query
-            sql_query = "SELECT sample_id AS pfas_sample_id, %s AS miles, study, pi, units, medium, pfas_samples.latitude AS pfas_latitude, " \
+            sql_query = "SELECT sample_id AS pfas_sample_id, "+pfas1+", "+pfas2+", %s AS miles, study, pi, units, medium, pfas_samples.latitude AS pfas_latitude, " \
                                 "pfas_samples.longitude AS pfas_longitude, npl.ogc_fid AS ogc_fid, npl.site_name as npl_site_name, " \
                                 "npl.site_score AS npl_site_score, npl.latitude AS npl_latitude, npl.longitude AS npl_longitude, pfas " \
                         "FROM opal_pfas_sample_data_albers pfas_samples " \
@@ -135,9 +152,13 @@ class pfas_sites_distance_from_npl_View(viewsets.ModelViewSet):
                     miles = int(vparts[1])
                 elif vparts[0] == 'pi':
                     pi = vparts[1]
+                elif vparts[0] == 'analytes':
+                    pfas1, pfas2 = vparts[1].split('|')
+                    pfas1 = pfas1+'_concentration'
+                    pfas2 = pfas2+'_concentration'
 
             # Custom Query
-            sql_query = "SELECT sample_id AS pfas_sample_id, %s AS miles, study, pi, units, medium, pfas_samples.latitude AS pfas_latitude, " \
+            sql_query = "SELECT sample_id AS pfas_sample_id, "+pfas1+", "+pfas2+", %s AS miles, study, pi, units, medium, pfas_samples.latitude AS pfas_latitude, " \
                                 "pfas_samples.longitude AS pfas_longitude, npl.ogc_fid AS ogc_fid, npl.site_name as npl_site_name, " \
                                 "npl.site_score AS npl_site_score, npl.latitude AS npl_latitude, npl.longitude AS npl_longitude " \
                         "FROM opal_pfas_sample_data_albers pfas_samples " \
