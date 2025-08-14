@@ -51,8 +51,8 @@ class podm_pfas_in_tapwater_usgs_View(viewsets.ModelViewSet):
 
 #"""
 class superfund_national_priorities_list_View(viewsets.ModelViewSet):
-    #authentication_classes = [JWTAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     pagination_class = CustomPageNumberPagination
     queryset = superfund_national_priorities_list.objects.all()
@@ -96,8 +96,8 @@ class podm_ntar_sample_data_View(viewsets.ModelViewSet):
     ordering_fields = ['city', 'state', 'site_id', 'site_type', 'latitude', 'longitude']
 
 class pfas_sites_distance_from_npl_View(viewsets.ModelViewSet):
-    #authentication_classes = [JWTAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     queryset = pfas_sites_distance_from_npl.objects.all()
     serializer_class = pfas_sites_distance_from_npl_Serializer
