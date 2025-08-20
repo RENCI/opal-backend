@@ -45,7 +45,7 @@ class pfas_sites_distance_from_npl_Serializer(ModelSerializer):
         id_field = 'pfas_sample_id'
         fields = ('pfas_sample_id','study','miles','pi','units','medium','pfas_longitude','pfas_latitude','ogc_fid','npl_site_name','npl_latitude','npl_longitude')
 
-class superfund_national_priorities_list_Serializer(ModelSerializer):
+class superfund_national_priorities_list_Serializer(QueryFieldsMixin, ModelSerializer):
     class Meta:
         model = superfund_national_priorities_list
         id_field = 'ogc_fid'
