@@ -1,6 +1,6 @@
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from rest_framework.serializers import ModelSerializer
-from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list
+from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list, opal_site_distance_to_closest_superfund_site
 from drf_queryfields import QueryFieldsMixin
 
 # Serializer, with GeoFeatureModelSerializer, for tables for the gauge_station_source_data model view.
@@ -44,6 +44,12 @@ class pfas_sites_distance_from_npl_Serializer(ModelSerializer):
         model = pfas_sites_distance_from_npl
         id_field = 'pfas_sample_id'
         fields = ('pfas_sample_id','study','miles','pi','units','medium','pfas_longitude','pfas_latitude','ogc_fid','npl_site_name','npl_latitude','npl_longitude')
+
+class opal_site_distance_to_closest_superfund_site_Serializer(QueryFieldsMixin, ModelSerializer):
+    class Meta:
+        model = opal_site_distance_to_closest_superfund_site
+        id_field = 'opal_site_sample_id'
+        fields = ('opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site')
 
 class superfund_national_priorities_list_Serializer(QueryFieldsMixin, ModelSerializer):
     class Meta:

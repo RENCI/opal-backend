@@ -252,6 +252,15 @@ class pfas_sites_distance_from_npl(models.Model):
         managed = False
         db_table = "pfas_sites_distance_from_npl"
 
+class opal_site_distance_to_closest_superfund_site(models.Model):
+    opal_site_sample_id = models.CharField(max_length=100,null=False,primary_key=True)
+    superfund_ogc_fid =  models.IntegerField(blank=False, null=False)
+    miles_to_closest_superfund_site = models.FloatField()
+
+    class Meta: 
+        managed = False
+        db_table = "opal_site_distance_to_closest_superfund_site"
+
 class superfund_national_priorities_list(models.Model):
     ogc_fid = models.IntegerField(null=False, primary_key=True)
     objectid = models.CharField(max_length=7,null=True)
@@ -292,4 +301,3 @@ class superfund_national_priorities_list(models.Model):
     class Meta: 
         managed = False
         db_table = "superfund_national_priorities_list"
-#"""

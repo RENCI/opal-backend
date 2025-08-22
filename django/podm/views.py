@@ -12,8 +12,8 @@ from rest_framework_gis.filters import InBBoxFilter, DistanceToPointFilter, Dist
 from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
 from url_filter.integrations.drf import DjangoFilterBackend
-from .serializers import pfas_name_classification_info_Serializer, pfas_in_tapwater_usgs_Serializer, pfas_sample_data_Serializer, pfas_sample_data2_Serializer, ntar_sample_data_Serializer, pfas_sites_distance_from_npl_Serializer, superfund_national_priorities_list_Serializer
-from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list
+from .serializers import pfas_name_classification_info_Serializer, pfas_in_tapwater_usgs_Serializer, pfas_sample_data_Serializer, pfas_sample_data2_Serializer, ntar_sample_data_Serializer, pfas_sites_distance_from_npl_Serializer, superfund_national_priorities_list_Serializer, opal_site_distance_to_closest_superfund_site_Serializer
+from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list, opal_site_distance_to_closest_superfund_site
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_gis.pagination import GeoJsonPagination
 from django.db import connection
@@ -49,10 +49,9 @@ class podm_pfas_in_tapwater_usgs_View(viewsets.ModelViewSet):
                      'pfoa', 'pfhxs', 'pfhxa', 'pfhps', 'pfhpa', 'pfds_num', 'pfda_num', 'pfbs', 'pfba', 'pf', 'genx_num', 'fosa',
                      'f6_2fts', 'latitude', 'longitude']
 
-#"""
 class superfund_national_priorities_list_View(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    #authentication_classes = [JWTAuthentication]
+    #permission_classes = [IsAuthenticated]
 
     pagination_class = CustomPageNumberPagination
     queryset = superfund_national_priorities_list.objects.all()
@@ -60,7 +59,17 @@ class superfund_national_priorities_list_View(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filter_fields = ['ogc_fid','objectid','site_name','site_score','site_epa_i','sems_id','sits_id','region_id','state','city','county','status','longitude','latitude','proposed_d','listing_da','constructi','construc_1','noid_date','deletion_d','site_listi','site_progr','notice_of','proposed_f','deletion_f','final_fr_n','noid_fr_no','restoratio','site_has_h','creationda','creator','editdate','editor','objectid2','pfas']
     ordering_fields = ['ogc_fid','objectid','site_name','site_score','site_epa_i','sems_id','sits_id','region_id','state','city','county','status','longitude','latitude','proposed_d','listing_da','constructi','construc_1','noid_date','deletion_d','site_listi','site_progr','notice_of','proposed_f','deletion_f','final_fr_n','noid_fr_no','restoratio','site_has_h','creationda','creator','editdate','editor','objectid2','pfas']
-#"""
+
+class opal_site_distance_to_closest_superfund_site_View(viewsets.ModelViewSet):
+    #authentication_classes = [JWTAuthentication]
+    #permission_classes = [IsAuthenticated]
+
+    pagination_class = CustomPageNumberPagination
+    queryset = opal_site_distance_to_closest_superfund_site.objects.all()
+    serializer_class = opal_site_distance_to_closest_superfund_site_Serializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filter_fields = ['opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site']
+    ordering_fields = ['opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site']
 
 class podm_pfas_sample_data_View(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
@@ -96,8 +105,8 @@ class podm_ntar_sample_data_View(viewsets.ModelViewSet):
     ordering_fields = ['city', 'state', 'site_id', 'site_type', 'latitude', 'longitude']
 
 class pfas_sites_distance_from_npl_View(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    #authentication_classes = [JWTAuthentication]
+    #permission_classes = [IsAuthenticated]
 
     queryset = pfas_sites_distance_from_npl.objects.all()
     serializer_class = pfas_sites_distance_from_npl_Serializer

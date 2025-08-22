@@ -28,6 +28,7 @@ router.register(r'pfas_sample_data2', views.podm_pfas_sample_data2_View, 'pfas_s
 router.register(r'ntar_sample_data', views.podm_ntar_sample_data_View, 'ntar_sample_data')
 router.register(r'distance_from_npl', views.pfas_sites_distance_from_npl_View, basename='distance_from_npl')
 router.register(r'superfund_npl', views.superfund_national_priorities_list_View, basename='superfund_npl')
+router.register(r'opal_distance_to_npl', views.opal_site_distance_to_closest_superfund_site_View, basename='opal_distance_to_npl')
 
 urlpatterns = [
     path("api/", include(router.urls)),
