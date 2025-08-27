@@ -1,6 +1,6 @@
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from rest_framework.serializers import ModelSerializer
-from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list, opal_site_distance_to_closest_superfund_site
+from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list, opal_site_distance_to_closest_superfund_site, pfas_sample_data_npl
 from drf_queryfields import QueryFieldsMixin
 
 # Serializer, with GeoFeatureModelSerializer, for tables for the gauge_station_source_data model view.
@@ -48,8 +48,8 @@ class pfas_sites_distance_from_npl_Serializer(ModelSerializer):
 class opal_site_distance_to_closest_superfund_site_Serializer(QueryFieldsMixin, ModelSerializer):
     class Meta:
         model = opal_site_distance_to_closest_superfund_site
-        id_field = 'opal_site_sample_id'
-        fields = ('opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site')
+        id_field = 'opal_id'
+        fields = ('opal_id','opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site')
 
 class superfund_national_priorities_list_Serializer(QueryFieldsMixin, ModelSerializer):
     class Meta:
@@ -57,3 +57,8 @@ class superfund_national_priorities_list_Serializer(QueryFieldsMixin, ModelSeria
         id_field = 'ogc_fid'
         fields = ('ogc_fid','objectid','site_name','site_score','site_epa_i','sems_id','sits_id','region_id','state','city','county','status','longitude','latitude','proposed_d','listing_da','constructi','construc_1','noid_date','deletion_d','site_listi','site_progr','notice_of','proposed_f','deletion_f','final_fr_n','noid_fr_no','restoratio','site_has_h','creationda','creator','editdate','editor','objectid2','pfas')
 
+class pfas_sample_data_npl_Serializer(QueryFieldsMixin, ModelSerializer):
+    class Meta:
+        model = pfas_sample_data_npl
+        id_field = 'id'
+        fields = ('id', 'sample_id', 'group_id', 'study', 'date', 'year', 'pi', 'units', 'medium', 'city', 'state', 'zipcode', 'site_id', 'site_type', 'latitude', 'longitude', 'superfund_ogc_fid', 'miles_to_closest_superfund_site', 'sample_detects', 'sample_sum', 'pfna_concentration','pfna_mrl','pfna_dl','pfna_flags','pfds_concentration','pfds_mrl','pfds_dl','pfds_flags','pfhxa_concentration','pfhxa_mrl','pfhxa_dl','pfhxa_flags','pfoa_concentration','pfoa_mrl','pfoa_dl','pfoa_flags','pfos_concentration','pfos_mrl','pfos_dl','pfos_flags','pfba_concentration','pfba_mrl','pfba_dl','pfba_flags','pfdoa_concentration','pfdoa_mrl','pfdoa_dl','pfdoa_flags','pfpea_concentration','pfpea_mrl','pfpea_dl','pfpea_flags','pfhps_concentration','pfhps_mrl','pfhps_dl','pfhps_flags','pfunda_concentration','pfunda_mrl','pfunda_dl','pfunda_flags','pfbs_concentration','pfbs_mrl','pfbs_dl','pfbs_flags','pfpes_concentration','pfpes_mrl','pfpes_dl','pfpes_flags','pfns_concentration','pfns_mrl','pfns_dl','pfns_flags','pfhpa_concentration','pfhpa_mrl','pfhpa_dl','pfhpa_flags','pfhxs_concentration','pfhxs_mrl','pfhxs_dl','pfhxs_flags','pfda_concentration','pfda_mrl','pfda_dl','pfda_flags')

@@ -1,11 +1,13 @@
 CREATE TABLE IF NOT EXISTS opal_site_distance_to_closest_superfund_site(
+  opal_id INT,
   opal_site_sample_id VARCHAR(100),
   superfund_ogc_fid INT,
   miles_to_closest_superfund_site NUMERIC
 );
 
-INSERT INTO opal_site_distance_to_closest_superfund_site (opal_site_sample_id, superfund_ogc_fid, miles_to_closest_superfund_site )
+INSERT INTO opal_site_distance_to_closest_superfund_site (opal_id, opal_site_sample_id, superfund_ogc_fid, miles_to_closest_superfund_site)
 SELECT
+    opal.id AS opal_id,
     opal.sample_id AS opal_site_sample_id,
     sf.ogc_fid AS superfund_ogc_fid,
     ST_Distance( opal.geom, sf.wkb_geometry) * 0.000621371  AS miles_to_closest_superfund_site
@@ -24,3 +26,5 @@ JOIN LATERAL (
 ON true
 WHERE opal.geom IS NOT NULL;
 
+CREATE INDEX IF NOT EXISTS opal_site_distance_to_closest_superfund_site_index
+ON opal_site_distance_to_closest_superfund_site(opal_id);

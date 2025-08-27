@@ -12,8 +12,8 @@ from rest_framework_gis.filters import InBBoxFilter, DistanceToPointFilter, Dist
 from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
 from url_filter.integrations.drf import DjangoFilterBackend
-from .serializers import pfas_name_classification_info_Serializer, pfas_in_tapwater_usgs_Serializer, pfas_sample_data_Serializer, pfas_sample_data2_Serializer, ntar_sample_data_Serializer, pfas_sites_distance_from_npl_Serializer, superfund_national_priorities_list_Serializer, opal_site_distance_to_closest_superfund_site_Serializer
-from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list, opal_site_distance_to_closest_superfund_site
+from .serializers import pfas_name_classification_info_Serializer, pfas_in_tapwater_usgs_Serializer, pfas_sample_data_Serializer, pfas_sample_data2_Serializer, ntar_sample_data_Serializer, pfas_sites_distance_from_npl_Serializer, superfund_national_priorities_list_Serializer, opal_site_distance_to_closest_superfund_site_Serializer, pfas_sample_data_npl_Serializer
+from .models import pfas_name_classification_info, pfas_in_tapwater_usgs, pfas_sample_data, pfas_sample_data2, ntar_sample_data, pfas_sites_distance_from_npl, superfund_national_priorities_list, opal_site_distance_to_closest_superfund_site, pfas_sample_data_npl
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_gis.pagination import GeoJsonPagination
 from django.db import connection
@@ -68,8 +68,8 @@ class opal_site_distance_to_closest_superfund_site_View(viewsets.ModelViewSet):
     queryset = opal_site_distance_to_closest_superfund_site.objects.all()
     serializer_class = opal_site_distance_to_closest_superfund_site_Serializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filter_fields = ['opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site']
-    ordering_fields = ['opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site']
+    filter_fields = ['opal_id', 'opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site']
+    ordering_fields = ['opal_id','opal_site_sample_id', 'superfund_ogc_fid', 'miles_to_closest_superfund_site']
 
 class podm_pfas_sample_data_View(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
@@ -187,3 +187,15 @@ class pfas_sites_distance_from_npl_View(viewsets.ModelViewSet):
                 return Response(results, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Object ID not provided'}, status=status.HTTP_400_BAD_REQUEST)
+            
+class opal_pfas_sample_data_npl_View(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    pagination_class = CustomPageNumberPagination
+    queryset = pfas_sample_data_npl.objects.all()
+    serializer_class = pfas_sample_data_npl_Serializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filter_fields = ['sample_id', 'group_id', 'study', 'date', 'year', 'pi', 'units', 'medium', 'city', 'state', 'zipcode', 'site_id', 'site_type', 'latitude', 'longitude', 'superfund_ogc_fid', 'miles_to_closest_superfund_site', 'sample_detects', 'sample_sum', 'pfna_concentration','pfna_mrl','pfna_dl','pfna_flags','pfds_concentration','pfds_mrl','pfds_dl','pfds_flags','pfhxa_concentration','pfhxa_mrl','pfhxa_dl','pfhxa_flags','pfoa_concentration','pfoa_mrl','pfoa_dl','pfoa_flags','pfos_concentration','pfos_mrl','pfos_dl','pfos_flags','pfba_concentration','pfba_mrl','pfba_dl','pfba_flags','pfdoa_concentration','pfdoa_mrl','pfdoa_dl','pfdoa_flags','pfpea_concentration','pfpea_mrl','pfpea_dl','pfpea_flags','pfhps_concentration','pfhps_mrl','pfhps_dl','pfhps_flags','pfunda_concentration','pfunda_mrl','pfunda_dl','pfunda_flags','pfbs_concentration','pfbs_mrl','pfbs_dl','pfbs_flags','pfpes_concentration','pfpes_mrl','pfpes_dl','pfpes_flags','pfns_concentration','pfns_mrl','pfns_dl','pfns_flags','pfhpa_concentration','pfhpa_mrl','pfhpa_dl','pfhpa_flags','pfhxs_concentration','pfhxs_mrl','pfhxs_dl','pfhxs_flags','pfda_concentration','pfda_mrl','pfda_dl','pfda_flags']
+    ordering_fields = ['sample_id', 'group_id', 'study', 'pi', 'date', 'year', 'units', 'medium', 'city', 'state', 'zipcode', 'site_id', 'site_type', 'latitude', 'longitude', 'superfund_ogc_fid', 'miles_to_closest_superfund_site', 'sample_detects', 'sample_sum', 'pfna_concentration','pfna_mrl','pfna_dl','pfna_flags','pfds_concentration','pfds_mrl','pfds_dl','pfds_flags','pfhxa_concentration','pfhxa_mrl','pfhxa_dl','pfhxa_flags','pfoa_concentration','pfoa_mrl','pfoa_dl','pfoa_flags','pfos_concentration','pfos_mrl','pfos_dl','pfos_flags','pfba_concentration','pfba_mrl','pfba_dl','pfba_flags','pfdoa_concentration','pfdoa_mrl','pfdoa_dl','pfdoa_flags','pfpea_concentration','pfpea_mrl','pfpea_dl','pfpea_flags','pfhps_concentration','pfhps_mrl','pfhps_dl','pfhps_flags','pfunda_concentration','pfunda_mrl','pfunda_dl','pfunda_flags','pfbs_concentration','pfbs_mrl','pfbs_dl','pfbs_flags','pfpes_concentration','pfpes_mrl','pfpes_dl','pfpes_flags','pfns_concentration','pfns_mrl','pfns_dl','pfns_flags','pfhpa_concentration','pfhpa_mrl','pfhpa_dl','pfhpa_flags','pfhxs_concentration','pfhxs_mrl','pfhxs_dl','pfhxs_flags','pfda_concentration','pfda_mrl','pfda_dl','pfda_flags']
+
