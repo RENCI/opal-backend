@@ -26,7 +26,7 @@ Ingest the NPL data:
     /projects/pfas/data/superfund_albers_national_priorities_list.csv  
   
     Create Table:  
-    opal-backend/extension/createNPL.sql  
+    opal-backend/extension/createAlbersNPL.sql 
   
     Copy data to table:  
     opal-backend/extension/data_copy_NPL.sql  
@@ -45,7 +45,20 @@ Create opal_albers_location table:
     Run commands in:  
     opal-backend/extension/createOPAL_AlbersLocation.sql   
     opal-backend/extension/createPfasPrimarySampleDataAlbers.sql  
+
+Create pfas_sites_distance_from_npl dumy table:
+    Run command in:
+    opal-backend/extension/createDistanceFromNPL.sql
+
+Create superfund_national_priorities_list table:
+    Run commands in:
+    createTableNPL.sql
+
+Create opal_site_distance_to_closest_superfund_site dumy table:
+    Run commands in:
+    opal-backend/extension/createOPAL-distance2NPL.sql
+
+Create opal_pfas_sample_data_npl View
+    Run command:
+    opdal-backend/extension/createPfasPrimarySampleDataNPL.sql
   
-Create pfas_sites_distance_from_npl dumy table:  
-    Run command in:  
-    opal-backend/extension/createDistanceFromNPL.sql  

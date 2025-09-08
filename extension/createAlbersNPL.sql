@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS superfund_albers_national_priorities_list(
  objectid2 INT,
  wkb_geometry GEOMETRY(Point, 102008),
  pfas BOOLEAN NOT NULL DEFAULT FALSE
-)
+);
 
 CREATE INDEX IF NOT EXISTS superfund_albers_npl_ids_index
 ON superfund_albers_national_priorities_list(ogc_fid, objectid);
